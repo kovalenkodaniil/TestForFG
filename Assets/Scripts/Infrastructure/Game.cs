@@ -1,4 +1,7 @@
-﻿namespace Scripts.Infrastructure
+﻿using Infrastructure;
+using Infrastructure.Services;
+
+namespace Scripts.Infrastructure
 {
     public class Game
     {
@@ -6,7 +9,7 @@
 
         public Game()
         {
-            StateMachine = new GameStateMachine(new SceneLoader());
+            StateMachine = new GameStateMachine(new SceneLoader(), new AllServices());
         }
     }
 }

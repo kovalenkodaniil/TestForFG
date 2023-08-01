@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.Infrastructure
+namespace Infrastructure
 {
     public class SceneLoader
     {

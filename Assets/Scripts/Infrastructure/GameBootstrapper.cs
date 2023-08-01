@@ -1,4 +1,4 @@
-using Scripts.Infrastructure.States;
+using Infrastructure.States;
 using UnityEngine;
 
 namespace Scripts.Infrastructure

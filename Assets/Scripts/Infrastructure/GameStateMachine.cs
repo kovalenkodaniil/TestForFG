@@ -1,8 +1,9 @@
-﻿using Scripts.Infrastructure.States;
+﻿using Infrastructure.Services;
+using Infrastructure.States;
 using System;
 using System.Collections.Generic;
 
-namespace Scripts.Infrastructure
+namespace Infrastructure
 {
    
     public class GameStateMachine
@@ -10,12 +11,12 @@ namespace Scripts.Infrastructure
         private Dictionary<Type, IState> _states;
         private IState _currentState;
 
-        public GameStateMachine(SceneLoader sceneLoader) 
+        public GameStateMachine(SceneLoader sceneLoader, AllServices services) 
         {
             _states = new Dictionary<Type, IState>() 
             {
-                [typeof(BootstrapState)] = new BootstrapState(this),
-                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader),
+                [typeof(BootstrapState)] = new BootstrapState(this, services),
+                [typeof(LoadLevelState)] = new LoadLevelState(this, services, sceneLoader),
                 [typeof(GameLoopState)] = new GameLoopState(),
             };
         }
