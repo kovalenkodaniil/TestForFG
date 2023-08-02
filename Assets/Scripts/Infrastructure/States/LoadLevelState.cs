@@ -2,7 +2,6 @@
 using Logic.Player;
 using Logic.UI;
 using Logic.Zone;
-using System.IO;
 using UnityEngine;
 
 namespace Infrastructure.States
@@ -63,23 +62,23 @@ namespace Infrastructure.States
 
         private void InitializeZone()
         {
-            BuyZone _digZone = GameObject.FindObjectOfType<BuyZone>();
+            DigZone _digZone = GameObject.FindObjectOfType<DigZone>();
 
             _digZone.Init();
 
-            SellZone _dropZone = GameObject.FindObjectOfType<SellZone>();
+            DropZone _dropZone = GameObject.FindObjectOfType<DropZone>();
 
             _dropZone.Init();
 
             CreateUI(_digZone, _dropZone);
         }
 
-        private void CreateUI(BuyZone digZone, SellZone dropZone)
+        private void CreateUI(DigZone digZone, DropZone dropZone)
         {
             GameObject UI = _assetProvider.Instantiate(AssetPath.UIPath);
 
             if (UI.TryGetComponent<UIActor>(out UIActor actor))
-                actor.Init(digZone.Delay, dropZone.Delay);
+                actor.Init(digZone, dropZone);
         }
     }
 }

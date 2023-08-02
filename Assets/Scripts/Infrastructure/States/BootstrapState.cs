@@ -1,4 +1,5 @@
-﻿using Infrastructure.Services;
+﻿using DG.Tweening;
+using Infrastructure.Services;
 
 namespace Infrastructure.States
 {
@@ -32,6 +33,8 @@ namespace Infrastructure.States
         {
             _services.Register<InputService>(new InputService());
             _services.Register<AssetProviderService>(new AssetProviderService());
+
+            DOTween.Init();
         }
     }
 }

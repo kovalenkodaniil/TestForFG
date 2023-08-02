@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 3183790872935230328}
   - component: {fileID: 8760456769827271247}
   m_Layer: 0
-  m_Name: BuyZone Variant
+  m_Name: DigZone Variant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _triger: {fileID: 3183790872935230327}
+  _startDelay: 5
 --- !u!65 &8760456769827271247
 BoxCollider:
   m_ObjectHideFlags: 0

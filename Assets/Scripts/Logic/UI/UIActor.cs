@@ -6,21 +6,29 @@ namespace Logic.UI
 {
     public class UIActor : MonoBehaviour
     {
-        [SerializeField] private List<ButtonViewer> _upgradeDigButton;
-        [SerializeField] private List<ButtonViewer> _upgradeDropButton;
+        [SerializeField] private List<ButtonViewer> _upgradeDigButtons;
+        [SerializeField] private List<ButtonViewer> _upgradeDropButtons;
+        [SerializeField] private DropCounter _counter;
 
-        private ButtonViewer _selectedButton;
+        private ButtonViewer _selectedDigButton;
+        private ButtonViewer _selectedDropButton;
+        private DropZone _dropZone;
 
-        public void Init(ZoneEffectDelay digDelay, ZoneEffectDelay dropDelay)
+        public void Init(DigZone digZone, DropZone dropZone)
         {
-            InitializeButtons(digDelay, _upgradeDigButton);
-            InitializeButtons(dropDelay, _upgradeDropButton);
+            InitializeButtons(digZone.Delay, _upgradeDigButtons);
+            InitializeButtons(dropZone.Delay, _upgradeDropButtons);
+
+            _dropZone = dropZone;
+            _dropZone.ItemDroped += OnItemDroped;
         }
 
         private void OnDisable()
         {
-            ResetButtons(_upgradeDigButton);
-            ResetButtons(_upgradeDropButton);
+            ResetButtons(_upgradeDigButtons);
+            ResetButtons(_upgradeDropButtons);
+
+            _dropZone.ItemDroped -= OnItemDroped;
         }
 
         private void InitializeButtons(ZoneEffectDelay delay, List<ButtonViewer> _buttons)
@@ -40,7 +48,23 @@ namespace Logic.UI
 
         private void OnMultiplicatorSelected(ButtonViewer button) 
         {
-            _selectedButton = button;
+            if (_upgradeDigButtons.Contains(button))
+            {
+                _selectedDigButton?.ResetDOTweenAnim();
+
+                _selectedDigButton = button;
+            }
+            else
+            {
+                _selectedDropButton?.ResetDOTweenAnim();
+
+                _selectedDropButton = button;
+            }
+        }
+
+        private void OnItemDroped()
+        {
+            _counter.AddDrop();
         }
     }
 }
