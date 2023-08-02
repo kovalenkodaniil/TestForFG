@@ -8,7 +8,6 @@ namespace Logic.UI
     {
         [SerializeField] private TMP_Text _text;
 
-        private int count;
         private DropZone _dropZone;
 
         private void OnDisable()
@@ -18,16 +17,11 @@ namespace Logic.UI
 
         public void Init(DropZone dropZone)
         {
-            count = 0;
             _dropZone = dropZone;
-
             _dropZone.ItemDroped += OnItemDroped;
         }
 
-        private void OnItemDroped()
-        {
-            count++;
-            _text.text = count.ToString();
-        }
+        private void OnItemDroped() =>
+            _text.text = _dropZone.DroppedItemsCount.ToString();
     }
 }
