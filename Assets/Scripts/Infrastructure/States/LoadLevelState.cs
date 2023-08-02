@@ -1,4 +1,7 @@
 ﻿using Infrastructure.Services;
+using Logic.Player;
+using Logic.UI;
+using Logic.Zone;
 using System.IO;
 using UnityEngine;
 
@@ -12,6 +15,7 @@ namespace Infrastructure.States
         private readonly GameStateMachine _stateMachine;
         private readonly SceneLoader _sceneLoader;
         private readonly AllServices _services;
+        private AssetProviderService _assetProvider;
 
         public LoadLevelState(GameStateMachine stateMachine, AllServices services, SceneLoader sceneLoader) 
         {
@@ -36,21 +40,46 @@ namespace Infrastructure.States
 
         private void InitGameWorld()
         {
-            AssetProviderService assetProvider = _services.GetService<AssetProviderService>();
+            _assetProvider = _services.GetService<AssetProviderService>();
 
-            CreatePlayer(assetProvider);
+            CreatePlayer();
+            InitializeZone();
 
             EnterGameLoop();
         }
 
-        private void CreatePlayer(AssetProviderService assetProvider)
+        private void CreatePlayer()
         {
             GameObject spawnPosition = GameObject.FindGameObjectWithTag(SpawnPoint);
 
-            GameObject player = assetProvider.Instantiate(AssetPath.PlayerPath, spawnPosition.transform.position);
+            GameObject player = _assetProvider.Instantiate(AssetPath.PlayerPath, spawnPosition.transform.position);
 
             if (player.TryGetComponent<PlayerMove>(out PlayerMove playerMove))
                 playerMove.Init(_services.GetService<InputService>());
+
+            if (player.TryGetComponent<PlayerBackpack>(out PlayerBackpack backpack))
+                backpack.Init();
+        }
+
+        private void InitializeZone()
+        {
+            BuyZone _digZone = GameObject.FindObjectOfType<BuyZone>();
+
+            _digZone.Init();
+
+            SellZone _dropZone = GameObject.FindObjectOfType<SellZone>();
+
+            _dropZone.Init();
+
+            CreateUI(_digZone, _dropZone);
+        }
+
+        private void CreateUI(BuyZone digZone, SellZone dropZone)
+        {
+            GameObject UI = _assetProvider.Instantiate(AssetPath.UIPath);
+
+            if (UI.TryGetComponent<UIActor>(out UIActor actor))
+                actor.Init(digZone.Delay, dropZone.Delay);
         }
     }
 }
