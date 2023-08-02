@@ -17,6 +17,7 @@ namespace Logic.UI
         [SerializeField] Image _buttonImage;
         [SerializeField] Color _targetColor;
         [SerializeField] float _animDuration;
+        [SerializeField, Range (1f, 1.3f)] float _scaleModificator;
 
         private ZoneEffectDelay _delay;
         private Vector3 _defaultScale;
@@ -67,7 +68,7 @@ namespace Logic.UI
         private void PlayDoTweenAnim()
         {
             _button.interactable = false;
-            _button.transform.DOScale(new Vector3(1.2f, 1.2f, 1), _animDuration);
+            _button.transform.DOScale(new Vector3(_scaleModificator, _scaleModificator, _button.transform.localScale.z), _animDuration);
 
             _buttonImage.DOColor(_targetColor, _animDuration);
         }

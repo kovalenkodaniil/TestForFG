@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Logic.UI
 {
-    public class UIActor : MonoBehaviour
+    public class ButtonController : MonoBehaviour
     {
         [SerializeField] private List<ButtonViewer> _upgradeDigButtons;
         [SerializeField] private List<ButtonViewer> _upgradeDropButtons;
@@ -12,23 +12,17 @@ namespace Logic.UI
 
         private ButtonViewer _selectedDigButton;
         private ButtonViewer _selectedDropButton;
-        private DropZone _dropZone;
 
-        public void Init(DigZone digZone, DropZone dropZone)
+        public void Init(ZoneEffectDelay digDelay, ZoneEffectDelay dropZone)
         {
-            InitializeButtons(digZone.Delay, _upgradeDigButtons);
-            InitializeButtons(dropZone.Delay, _upgradeDropButtons);
-
-            _dropZone = dropZone;
-            _dropZone.ItemDroped += OnItemDroped;
+            InitializeButtons(digDelay, _upgradeDigButtons);
+            InitializeButtons(dropZone, _upgradeDropButtons);
         }
 
         private void OnDisable()
         {
             ResetButtons(_upgradeDigButtons);
             ResetButtons(_upgradeDropButtons);
-
-            _dropZone.ItemDroped -= OnItemDroped;
         }
 
         private void InitializeButtons(ZoneEffectDelay delay, List<ButtonViewer> _buttons)
@@ -60,11 +54,6 @@ namespace Logic.UI
 
                 _selectedDropButton = button;
             }
-        }
-
-        private void OnItemDroped()
-        {
-            _counter.AddDrop();
         }
     }
 }

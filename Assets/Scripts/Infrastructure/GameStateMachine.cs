@@ -23,8 +23,6 @@ namespace Infrastructure
 
         public void Enter<TState>() where TState : IState
         {
-            _currentState?.Exit();
-
             _currentState = _states[typeof(TState)];
             _currentState.Enter();
         }

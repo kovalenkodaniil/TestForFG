@@ -20,10 +20,6 @@ namespace Infrastructure.States
             EnterLoadLevel();
         }
 
-        public void Exit()
-        {
-        }
-
         private void EnterLoadLevel()
         {
             _stateMachine.Enter<LoadLevelState>();
@@ -32,7 +28,12 @@ namespace Infrastructure.States
         private void RegisterServices()
         {
             _services.Register<InputService>(new InputService());
+
             _services.Register<AssetProviderService>(new AssetProviderService());
+
+            _services.Register<GameFactory>(new GameFactory(
+                _services.GetService<InputService>(), 
+                _services.GetService<AssetProviderService>()));
 
             DOTween.Init();
         }
